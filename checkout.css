@@ -1,0 +1,402 @@
+body {
+    background-color: #f4f4f9;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#page1 {
+    margin-top: 20px;
+}
+#page2 {
+    margin-top: 20px;
+}
+#page3 {
+    margin-top: 20px;
+}
+
+.upload-sketch-img-area p {
+    text-align: center;
+}
+
+
+h2, h3 {
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    padding: 15px;
+    background-color: #1E183F;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 30px; /* Add vertical space below titles */
+}
+
+h3 {
+    background-color: transparent;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #1E183F;
+    margin-bottom: 10px; /* Space below labels */
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+.btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #1E183F;
+    border: none;
+    width: 100%;
+    margin-bottom: 20px; /* Space below primary buttons */
+}
+
+.btn-primary:hover {
+    background-color: #302e5a;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    width: 100%;
+    margin-bottom: 20px; /* Space below secondary buttons */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 30px; /* Space below popups */
+}
+
+.popup-content p {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.popup-content button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #fff;
+    width: 100px;
+    margin-bottom: 10px; /* Space below popup buttons */
+}
+
+.popup-content button#popupYes {
+    background-color: #1E183F;
+    border: none;
+}
+
+.popup-content button#popupYes:hover {
+    background-color: #302e5a;
+}
+
+.popup-content button#popupNo {
+    background-color: #6c757d;
+    border: none;
+}
+
+.popup-content button#popupNo:hover {
+    background-color: #5a6268;
+}
+
+#page3 .visa-logo {
+    max-width: 100px;
+    margin-bottom: 20px;
+}
+
+.form-page {
+    display: none;
+}
+
+.form-page.active {
+    display: block;
+}
+
+.form-section {
+    display: none;
+    margin-bottom: 30px; /* Space below form sections */
+}
+
+#firstTimeSection,
+#returningCustomerSection {
+    display: none;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #fff;
+    cursor: pointer;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn-back i {
+    font-size: 1.2rem;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    background-color: #1E183F;
+    color: #fff;
+    padding: 15px;
+    box-sizing: border-box;
+    margin-bottom: 30px; /* Space below header container */
+}
+
+.header-container h2 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.is-invalid:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: -15px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+}
+
+.text-danger {
+    display: none;
+}
+
+.color-picker-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px; /* Space below color picker container */
+}
+
+.color-picker-container input[type="color"] {
+    border: none;
+    padding: 0;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.color-picker-container input[type="color"]:hover {
+    border: 2px solid #666;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.color-picker-container input[type="color"]:active {
+    transform: scale(0.95);
+}
+
+.upload-sketch-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px; /* Space below upload sketch container */
+}
+
+.upload-sketch-img-area {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 260px;
+    background: var(--grey);
+    margin-bottom: 30px; /* Space below upload sketch image area */
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upload-sketch-img-area .icon {
+    font-size: 90px;
+    color: #c00231;
+}
+
+.upload-sketch-img-area h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+    background-color: transparent;
+    color: #333;
+}
+
+.upload-sketch-img-area p {
+    color: #999;
+    margin: 0;
+}
+
+.upload-sketch-img-area p span {
+    font-weight: 600;
+}
+
+.upload-sketch-img-area img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 100;
+}
+
+.upload-sketch-img-area::before {
+    content: attr(data-img);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 200;
+}
+
+.upload-sketch-img-area.active:hover::before {
+    opacity: 1;
+}
+
+.select-image {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 0;
+    border-radius: 15px;
+    background: #0071FF;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Space below select image button */
+}
+
+.select-image:hover {
+    background: #005DD1;
+}
+
+.upload-sketch-select-image {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 0;
+    border-radius: 15px;
+    background: #c00231;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Space below select image button */
+}
+
+.upload-sketch-select-image:hover {
+    background: #005DD1;
+}
+
+.upload-sketch-select-image:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 113, 255, 0.3);
+}
+.upload-button-container {
+    display: flex;
+    align-items: center;
+}
+
+#successMessage {
+    margin-left: 10px; /* Adjust as needed for proper spacing */
+    color: green; /* Optional: change color to green for success */
+}

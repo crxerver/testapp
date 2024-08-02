@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#131120">
+    <title>Services</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .footer-button {
+            display: none;
+            position: absolute;
+            bottom: -90px;
+            left: 50%;
+            transform: translateX(-50%);
+            justify-content: center;
+            align-items: center;
+            background-color: #131120;
+            padding: 10px;
+            border-radius: 40px;
+            z-index: 100;
+        }
+
+        .footer-button .design-text {
+            margin-right: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .footer-button .design-btn {
+            background-color: #38258d;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        .swiper-slide {
+            position: relative;
+        }
+
+        .swiper-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .zoomed-slide .footer-button {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main">
+        <!-- Back button -->
+        <div class="back-button" id="backButton">
+            <img src="image/back-arrow.svg" alt="Back">
+        </div>
+
+        <!-- Swiper -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- Slides will be dynamically generated here -->
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="footer-menu">
+            <img class="write" src="image/write.svg">
+            <img src="image/home.svg">
+            <div class="cart">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <p id="count">0</p>
+            </div>
+            <img src="image/profile.svg" alt="Profile">
+        </div>
+
+        <!-- Cart Page -->
+        <div class="cart-page hidden" id="cartPage">
+            <div class="cart-header">
+                <div class="cart-back-button" id="cartBackButton">
+                    <img src="image/back-arrow.svg" alt="Back">
+                </div>
+                <h2>Your Cart</h2>
+            </div>
+            <div class="cart-content" id="cartContent">
+                <!-- Cart items will be dynamically added here -->
+            </div>
+            <div class="cart-footer">
+                <span class="total">Total: <span id="totalAmount">R0.00</span></span>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const product = [
+                { id: 0, image: 'image/1.jpg', title: 'Logo', price: 300 },
+                { id: 1, image: 'image/2.jpg', title: 'Poster', price: 200 },
+                { id: 2, image: 'image/3.jpg', title: 'Sign', price: 300 },
+                { id: 3, image: 'image/4.jpg', title: 'Flyer', price: 320 },
+                { id: 4, image: 'image/5.jpg', title: 'Banner', price: 420 },
+                { id: 5, image: 'image/6.jpg', title: 'Sticker', price: 150 },
+                { id: 6, image: 'image/7.jpg', title: 'Product', price: 230 },
+                { id: 7, image: 'image/8.jpg', title: 'Business Card', price: 200 },
+                { id: 8, image: 'image/9.jpg', title: 'Calendar', price: 200 },
+                { id: 9, image: 'image/10.jpg', title: 'Website', price: 1750 }
+            ];
+
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
+            const backButton = document.getElementById('backButton');
+            const cartBackButton = document.getElementById('cartBackButton');
+            const footerMenu = document.querySelector('.footer-menu');
+            const cartPage = document.getElementById('cartPage');
+            const smallTexts = document.querySelectorAll('.small-text');
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Swiper initialization
+            const swiper = new Swiper(".swiper-container", {
+                slidesPerView: "auto",
+                spaceBetween: 40,
+                centeredSlides: true,
+                grabCursor: true,
+                loop: true,
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+            });
+
+            // Generate slides
+            product.forEach(item => {
+                const slide = document.createElement('div');
+                slide.classList.add('swiper-slide');
+                slide.setAttribute('data-index', item.id);
+                slide.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="info">
+                        <h1>${item.title}</h1>
+                        <h3>design</h3>
+                    </div>
+                    <div class="small-text">
+                    </div>
+                    <div class="footer-button">
+                        <span class="design-text">R${item.price}</span>
+                        <button class="design-btn" data-id="${item.id}">Design</button>
+                    </div>
+                `;
+                swiperWrapper.appendChild(slide);
+            });
+
+            // Add to cart function
+            function addToCart(id) {
+                const item = product.find(product => product.id === id);
+                if (item) {
+                    cart.push(item);
+                    updateCartDisplay();
+                    updateCartInLocalStorage();
+                }
+            }
+
+            // Update cart display
+            function updateCartDisplay() {
+                const countElement = document.getElementById('count');
+                const totalAmountElement = document.getElementById('totalAmount');
+                const cartContent = document.getElementById('cartContent');
+
+                countElement.textContent = cart.length;
+
+                if (cart.length === 0) {
+                    cartContent.innerHTML = 'Your cart is empty';
+                    totalAmountElement.textContent = 'R0.00';
+                } else {
+                    let total = 0;
+                    cartContent.innerHTML = cart.map((item, index) => {
+                        total += item.price;
+                        return (
+                            `<div class='cart-item'>
+                                <span class='item-name'>${item.title}</span>
+                                <span class='item-price'>R${item.price}</span>
+                                <button class='remove-btn' data-index='${index}'>
+                                    <img src="image/trash.svg" alt="Remove">
+                                </button>
+                            </div>`
+                        );
+                    }).join('');
+                    totalAmountElement.textContent = `R${total.toFixed(2)}`;
+                }
+            }
+
+            // Handle slide click event
+            swiperWrapper.addEventListener('click', (event) => {
+                if (event.target.matches('.design-btn')) {
+                    const id = parseInt(event.target.getAttribute('data-id'), 10);
+                    addToCart(id);
+                    event.stopPropagation();
+                }
+                if (event.target.closest('.swiper-slide')) {
+                    const slide = event.target.closest('.swiper-slide');
+                    const index = Array.from(swiperWrapper.children).indexOf(slide);
+
+                    smallTexts.forEach((text, i) => {
+                        if (i === index) {
+                            text.classList.add('show');
+                        } else {
+                            text.classList.remove('show');
+                        }
+                    });
+
+                    document.querySelectorAll('.swiper-slide').forEach(s => {
+                        if (s !== slide) {
+                            s.classList.add('hidden');
+                        }
+                    });
+                    slide.classList.add('zoomed');
+                    swiperWrapper.classList.add('zoomed-slide');
+
+                    footerMenu.classList.add('hidden');
+                    footerMenu.classList.remove('hidden');
+                    footerMenu.classList.add('show');
+
+                    backButton.classList.add('show');
+
+                    // Show the footer button of the clicked slide
+                    slide.querySelector('.footer-button').style.display = 'flex';
+                }
+            });
+
+            // Back button functionality
+            backButton.addEventListener('click', () => {
+                document.querySelectorAll('.swiper-slide').forEach(s => {
+                    s.classList.remove('hidden');
+                    s.classList.remove('zoomed');
+                    s.querySelector('.footer-button').style.display = 'none'; // Hide footer button
+                });
+                swiperWrapper.classList.remove('zoomed-slide');
+                footerMenu.classList.add('hidden');
+                footerMenu.innerHTML = `
+                    <img src="image/write.svg">
+                    <img src="image/home.svg">
+                    <div class="cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <p id="count">${cart.length}</p>
+                    </div>
+                    <img src="image/profile.svg">
+                `;
+                footerMenu.classList.remove('hidden');
+                backButton.classList.remove('show');
+            });
+
+            // Cart button functionality
+            document.querySelector('.fa-cart-shopping').addEventListener('click', () => {
+                cartPage.classList.remove('hidden');
+            });
+
+            // Cart back button functionality
+            cartBackButton.addEventListener('click', () => {
+                cartPage.classList.add('hidden');
+            });
+
+            // Remove item from cart
+            cartPage.addEventListener('click', (event) => {
+                // Ensure the event is registered for dynamically added elements
+                if (event.target.closest('.remove-btn')) {
+                    const index = parseInt(event.target.closest('.remove-btn').getAttribute('data-index'), 10);
+                    cart.splice(index, 1);
+                    updateCartDisplay();
+                    updateCartInLocalStorage();
+                }
+            });
+
+            // Handle checkout button click
+            document.querySelector('.checkout-btn').addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Your cart is empty. Please add items to the cart before checking out.');
+                } else {
+                    window.location.href = 'checkout.html';
+                }
+            });
+
+            // Update cart in localStorage
+            function updateCartInLocalStorage() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        });
+    </script>
+</body>
+</html>

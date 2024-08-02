@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#131120">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="checkout.css">
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <!-- Form Pages -->
+    <div class="form-page active" id="page1">
+        <div class="page-heading-container">
+            <h2>Your Cart Items</h2>
+        </div>
+        <div id="cartItems"></div>
+        
+        <form id="formPage1" name="submit-to-google-sheet" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="uploadSketch" class="form-label">Upload Sketch</label>
+                <input type="file" class="form-control" id="fileUpload" style="display: none;">
+                <div class="upload-sketch-container">
+                    <div class="upload-sketch-img-area" data-img="No file chosen">
+                        <i class="bi bi-cloud-upload icon"></i>
+                        <h3>Upload Sketch</h3>
+                        <p>File size must be less than <span>30MB</span><br>jpg, jpeg, png and pdf</p>
+                    </div>
+                    <button type="button" class="upload-sketch-select-image" id="upload_widget">Select Image</button>
+                    <span id="successMessage" style="display:none;">Upload successful!</span>
+                </div>
+                <small class="text-danger" id="uploadSketchError"></small>
+            </div>            
+            
+            <div class="mb-3">
+                <label class="form-label">Choose Your Color Theme</label>
+                <div class="color-picker-container">
+                    <input type="color" id="color1" name="color1" value="#ff0000">
+                    <input type="color" id="color2" name="color2" value="#00ff00">
+                    <input type="color" id="color3" name="color3" value="#0000ff">
+                </div>
+                <input type="hidden" id="hiddenColor1" name="color1">
+                <input type="hidden" id="hiddenColor2" name="color2">
+                <input type="hidden" id="hiddenColor3" name="color3">
+            </div>
+            
+            <div class="mb-3">
+                <label for="designDescription" class="form-label">Design Description</label>
+                <textarea class="form-control" id="designDescription" rows="3" required></textarea>
+                <small class="text-danger" id="designDescriptionError"></small>
+            </div>
+            <button type="button" class="btn btn-primary" id="proceedPage2">Proceed</button>
+        </form>
+        
+    </div>
+
+    <div class="form-page" id="page2">
+        <div class="header-container">
+            <button type="button" class="btn-back" id="backPage1"><i class="bi bi-arrow-left"></i></button>
+            <div class="page-heading-container">
+                <h2>Customer Information</h2>
+            </div>
+        </div>
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <p>Is this your first time designing with us?</p>
+                <button class="btn btn-primary" id="popupYes">Yes</button>
+                <button class="btn btn-secondary" id="popupNo">No</button>
+            </div>
+        </div>
+        <form id="formPage2" name="submit-to-google-sheet" method="POST" enctype="multipart/form-data">
+            <div id="firstTimeSection">
+                <div class="mb-3">
+                    <label for="companyName" class="form-label">Company Name</label>
+                    <input type="text" class="form-control" id="companyName" required>
+                    <small class="text-danger" id="companyNameError"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" required>
+                    <small class="text-danger" id="fullNameError"></small>
+                </div>
+                <!-- Add other first-time fields similarly -->
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" pattern="\d{0,12}" required>
+                    <small class="text-danger" id="phoneError"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" required>
+                    <small class="text-danger" id="emailError"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="province" class="form-label">Province</label>
+                    <input type="text" class="form-control" id="province" required>
+                    <small class="text-danger" id="provinceError"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="town" class="form-label">Town</label>
+                    <input type="text" class="form-control" id="town" required>
+                    <small class="text-danger" id="townError"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="physicalAddress" class="form-label">Physical Address</label>
+                    <input type="text" class="form-control" id="physicalAddress" required>
+                    <small class="text-danger" id="physicalAddressError"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="zipCode" class="form-label">Zip Code</label>
+                    <input type="text" class="form-control" id="zipCode" required pattern="\d{0,4}">
+                    <small class="text-danger" id="zipCodeError"></small>
+                </div>
+                
+            </div>
+            <div id="returningCustomerSection" style="display:none;">
+                <div class="mb-3">
+                    <label for="customerID" class="form-label">Customer ID</label>
+                    <input type="text" class="form-control" id="customerID" required>
+                    <small class="text-danger" id="customerIDError"></small>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="proceedPage3" disabled>Proceed</button>
+        </form>
+    </div>
+
+    <div class="form-page" id="page3">
+        <div class="header-container">
+            <button type="button" class="btn-back" id="backPage2"><i class="bi bi-arrow-left"></i></button>
+            <div class="page-heading-container">
+                <h2>Payment Information</h2>
+            </div>
+        </div>
+        <form id="formPage3" name="submit-to-google-sheet" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="paymentType" class="form-label">Payment Type</label>
+                <select class="form-select" id="paymentType" required>
+                    <option value="" disabled selected>Select payment type</option>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="cash">Cash</option>
+                </select>
+                <small class="text-danger" id="paymentTypeError"></small>
+            </div>
+            <button type="button" class="btn btn-success" id="submitForm">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var myWidget = cloudinary.createUploadWidget({
+        cloudName: 'ddaeq2zfn',
+        uploadPreset: 'tdayhujp',
+        clientAllowedFormats: ['jpg', 'jpeg', 'png', 'pdf'],  
+        sources: ['local', 'url', 'camera'],  
+        multiple: false,  
+        maxFileSize: 30000000  
+    }, (error, result) => { 
+        if (!error && result && result.event === "success") { 
+            console.log('Done! Here is the file info: ', result.info); 
+            var successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
+    });
+
+    document.getElementById("upload_widget").addEventListener("click", function(){
+        myWidget.open();
+    }, false);
+</script>
+
+<script type="module" src="validation.js"></script>
+<script type="module" src="checkout.js"></script>
+<script src="colors.js"></script>
+<script src="upload.js"></script> <!-- Include the new upload.js script -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsDiv = document.getElementById('cartItems');
+        const totalAmountDiv = document.getElementById('totalAmount');
+
+        // Calculate total amount
+        const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+
+        // Populate cart items and total amount
+        if (cart.length === 0) {
+            cartItemsDiv.innerHTML = '<p>Your cart is empty. Please add items to the cart before proceeding to checkout.</p>';
+            document.getElementById('proceedPage2').disabled = true; // Disable Proceed button if cart is empty
+        } else {
+            cartItemsDiv.innerHTML = `
+                ${cart.map(item => 
+                    `<div class="cart-item">
+                        <span class="item-name">${item.title}</span>
+                        <span class="item-price">R${item.price}</span>
+                    </div>`
+                ).join('')}
+                <div class="cart-total">
+                    <span>Total Amount:</span>
+                    <span class="total-price">R${totalAmount.toFixed(2)}</span>
+                </div>
+            `;
+        }
+    });
+
+    document.getElementById('submitForm').addEventListener('click', function() {
+        // Validate Page 1
+        const page1Valid = validatePage1();
+        if (!page1Valid) return;
+
+        // Validate Page 2
+        const page2Valid = validatePage2();
+        if (!page2Valid) return;
+
+        // Validate Page 3
+        const page3Valid = validatePage3();
+        if (!page3Valid) return;
+
+        // If all pages are valid, submit the form
+        document.querySelector('form[name="submit-to-google-sheet"]').submit();
+    });
+
+    function validatePage1() {
+        let isValid = true;
+        // Add your Page 1 validation logic here
+        return isValid;
+    }
+
+    function validatePage2() {
+        let isValid = true;
+        // Add your Page 2 validation logic here
+        return isValid;
+    }
+
+    function validatePage3() {
+        let isValid = true;
+        // Add your Page 3 validation logic here
+        return isValid;
+    }
+</script>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzhIjEHcpAwYhm__Q94NAC_cEZm1gJR1O4dcllqimJHWWot9O3IoyWSRM8vIdk-azEM/exec';
+
+    // Function to update hidden color input fields
+    function updateHiddenColors() {
+        document.getElementById('hiddenColor1').value = document.getElementById('color1').value;
+        document.getElementById('hiddenColor2').value = document.getElementById('color2').value;
+        document.getElementById('hiddenColor3').value = document.getElementById('color3').value;
+    }
+
+    // Add event listeners to color pickers
+    document.getElementById('color1').addEventListener('input', updateHiddenColors);
+    document.getElementById('color2').addEventListener('input', updateHiddenColors);
+    document.getElementById('color3').addEventListener('input', updateHiddenColors);
+
+    document.getElementById('submitForm').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Ensure hidden color values are up-to-date
+        updateHiddenColors();
+
+        // Collect data from all relevant fields
+        const cartItemsDiv = document.getElementById('cartItems');
+        let cartItemsText = '';
+
+        // Transform cart items HTML into plain text
+        const cartItems = cartItemsDiv.querySelectorAll('.cart-item');
+        cartItems.forEach(item => {
+            const itemName = item.querySelector('.item-name').textContent.trim();
+            const itemPrice = item.querySelector('.item-price').textContent.trim();
+            cartItemsText += `${itemName} ${itemPrice}\n`;
+        });
+
+        // Add the total amount separately
+        const totalAmount = cartItemsDiv.querySelector('.cart-total .total-price').textContent.trim();
+        cartItemsText += `Total Amount: ${totalAmount}`;
+
+        const designDescription = document.getElementById('designDescription').value;
+        const companyName = document.getElementById('companyName').value;
+        const fullName = document.getElementById('fullName').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const province = document.getElementById('province').value;
+        const town = document.getElementById('town').value;
+        const physicalAddress = document.getElementById('physicalAddress').value;
+        const zipCode = document.getElementById('zipCode').value;
+        const customerID = document.getElementById('customerID').value;
+        const paymentType = document.getElementById('paymentType').value;
+
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append('cartItems', cartItemsText);
+        formData.append('designDescription', designDescription);
+        formData.append('companyName', companyName);
+        formData.append('fullName', fullName);
+        formData.append('phone', phone);
+        formData.append('email', email);
+        formData.append('province', province);
+        formData.append('town', town);
+        formData.append('physicalAddress', physicalAddress);
+        formData.append('zipCode', zipCode);
+        formData.append('customerID', customerID);
+        formData.append('paymentType', paymentType);
+        formData.append('color1', document.getElementById('hiddenColor1').value);
+        formData.append('color2', document.getElementById('hiddenColor2').value);
+        formData.append('color3', document.getElementById('hiddenColor3').value);
+
+        // Debugging: Log FormData entries
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        // Send data to Google Sheets
+        fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(result => {
+            console.log('Success:', result);
+            alert('Your request has been sent!');
+            // Optionally reset the form or redirect
+            document.querySelector('form[name="submit-to-google-sheet"]').reset();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+
+
+
+</body>
+</html>
